@@ -36,7 +36,7 @@
          <children>
             <Label text="Username:">
                <padding>
-                  <Insets bottom="1.0" left="70.0" top="7.0" />
+                  <Insets bottom="1.0" left="69.0" top="7.0" />
                </padding>
             </Label>
             <TextField />
