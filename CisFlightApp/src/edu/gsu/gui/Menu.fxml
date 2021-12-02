@@ -8,29 +8,34 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="239.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="324.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane prefHeight="221.0" prefWidth="239.0">
+      <GridPane layoutX="-1.0" layoutY="-1.0" prefHeight="324.0" prefWidth="322.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="58.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="105.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="77.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="96.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.0" minWidth="10.0" prefWidth="172.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="66.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="112.0" minHeight="0.0" prefHeight="49.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="119.0" minHeight="0.0" prefHeight="58.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="119.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="112.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="119.0" minHeight="0.0" prefHeight="68.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="119.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                <children>
-                  <Region prefHeight="19.0" prefWidth="80.0" />
-                  <Label text="CIS Flight Booking" />
+                  <Region prefHeight="36.0" prefWidth="137.0" />
+                  <Label prefHeight="17.0" prefWidth="151.0" text="CIS Flight Booking">
+                     <font>
+                        <Font size="17.0" />
+                     </font></Label>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="129.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Flights" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="138.0" text="My Flights" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
