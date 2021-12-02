@@ -2,12 +2,50 @@ package edu.gsu.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 public class DBqueries {
 
 	public static void main(String[] args) throws Exception{
-		getConnection();
+		createTable();
+		post();
 	}
+	// Updates to DB
+	public static void post() throws Exception{
+		final String var1 = "Southwest";
+		final String var2 = "Spirit";
+		final String var3 = "Frontier";
+		final String var4 = "Delta";
+		final String var5 = "Air Canada";
+		final String var6 = "JetBlue";
+		final String var7 = "United";
+		final String var8 = "American";
+		try {
+			Connection conn = getConnection();
+			PreparedStatement posted = conn.prepareStatement
+					("INSERT INTO Flights (airlines) VALUES ('"+var3+"')");
+		posted.executeUpdate();
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		finally {
+			System.out.println("Insert Completed");
+		}
+	}
+	public static void createTable()throws Exception {
+		try {
+			Connection conn = getConnection();
+			PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Flights(flightID int NOT NULL AUTO_INCREMENT, airlines varchar(255), desination varchar(255), departure varchar(255), price int, PRIMARY KEY(flightID))");
+			create.executeUpdate();
+			
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		finally {
+			System.out.println("Funtion Complete. ");
+			}
+	}
+	
 	public static Connection getConnection() throws Exception{
 		try {	String driver = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://34.139.153.60:3306/project";
