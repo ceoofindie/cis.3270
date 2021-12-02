@@ -35,7 +35,7 @@ public class DBqueries {
 	public static void createTable()throws Exception {
 		try {
 			Connection conn = getConnection();
-			PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Flights(flightID int NOT NULL AUTO_INCREMENT, airlines varchar(255), desination varchar(255), departure varchar(255), price int, PRIMARY KEY(flightID))");
+			PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS customer_flights(customerID int NOT NULL AUTO_INCREMENT, flightID varchar(255),PRIMARY KEY('customerID))");
 			create.executeUpdate();
 			
 		}catch(Exception e) {

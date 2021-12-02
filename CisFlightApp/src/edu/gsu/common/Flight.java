@@ -1,7 +1,7 @@
 package edu.gsu.common;
 
 public class Flight {
-private int flightID = 16;
+public int flightID = 0;
 private String airlineName;
 public String destination = null;
 public String depature = null;
