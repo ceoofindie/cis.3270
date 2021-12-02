@@ -7,8 +7,7 @@ import java.sql.PreparedStatement;
 public class DBqueries {
 
 	public static void main(String[] args) throws Exception{
-		createTable();
-		post();
+getConnection();
 	}
 	// Updates to DB
 	public static void post() throws Exception{
