@@ -25,9 +25,9 @@ public Flight(String airlineName, int price, String destination, String departur
 	this.price = price;
 	this.destination = destination;
 	this.depature = departure;
-	
 	this.departureTime = departureTime;
 	this.arrivalTime = arrivalTime;
+	flightID++;
 }
 
 
