@@ -5,7 +5,7 @@ public String getFlightQuery(String uuid) {
 	return (String.format("Select * from projects.Flights WHERE flightID = '%d'", uuid));
 }
 
-public String createFlight(String airline) {
-	
-}
+//public String createFlight(String airline) {
+//	
+//}
 }

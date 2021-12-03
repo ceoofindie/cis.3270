@@ -9,11 +9,13 @@ private String userName = null;
 private String password = null;
 private String dateCreated = null;
 
-public Customer(String firstName, String lastName, String userName, String password) {
+public Customer(String customerID, String firstName, String lastName, String userName, String password, String dateCreated) {
+	this.customerID =customerID;
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.userName = userName;
 	this.password = password;
+	this.dateCreated = null;
 }
 
 public String getFirstName(){
