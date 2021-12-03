@@ -46,4 +46,9 @@ public String getCustomerID() {
 	return this.customerID;
 }
 
+public static String toString(Customer customer) {
+	var format = String.format("Customer: %s %s %s %s", customer.getCustomerID(), customer.getFirstName(), customer.getLastName(), customer.getUserName());
+	return format;
+}
+
 }

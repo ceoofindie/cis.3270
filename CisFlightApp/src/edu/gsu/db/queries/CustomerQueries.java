@@ -12,7 +12,7 @@ public class CustomerQueries {
 	
 	//read customer query
 	public static String getCustomerQuery(String uuid) {
-		var query = String.format("Select * from project.Customer where customerID = '%d'",uuid);
+		var query = String.format("Select * from project.Customer where customerID = '%s'",uuid);
 		System.out.println(query);
 		return query;
 	}
@@ -34,11 +34,11 @@ public class CustomerQueries {
 	//update customer 
 	public static String updateCustomer(Customer customer) {
 		return(String.format("UPDATE project.Customer "
-				+ "SET firstName='%a',"
-				+ "lastName='%b',"
-				+ "username='c%',"
-				+ "password='%d'"
-				+ "WHERE customerID='%e'", 
+				+ "SET firstName='%s',"
+				+ "lastName='%s',"
+				+ "username='%s',"
+				+ "password='%s'"
+				+ "WHERE customerID='%s'", 
 				customer.getFirstName(), customer.getLastName(), customer.getUserName(), customer.getPassword(), customer.getCustomerID()));
 	}
 }

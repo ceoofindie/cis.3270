@@ -1,33 +1,35 @@
 package edu.gsu.common;
 
 public class Flight {
-public int flightID = 0;
+public String flightID = null;
 private String airlineName;
 public String destination = null;
 public String depature = null;
-public int price = 0;
+public String price = null;
 public String departureTime = null;
 public String arrivalTime = null;
+public String flightDate = null;
 
 
 
 public Flight() {
-	flightID++;
+	
 }
 
 public Flight(String airlineName){
 	this.airlineName = airlineName;
-	flightID++;
+
 }
 
-public Flight(String airlineName, int price, String destination, String departure, String departureTime, String arrivalTime ) {
+public Flight(String flightID, String airlineName, String destination, String departure, String price, String departureTime, String arrivalTime, String flightDate ) {
 	this.airlineName = airlineName;
 	this.price = price;
 	this.destination = destination;
 	this.depature = departure;
 	this.departureTime = departureTime;
 	this.arrivalTime = arrivalTime;
-	flightID++;
+	this.flightID = flightID;
+	
 }
 
 
@@ -39,17 +41,17 @@ public void setAirlineName(String airlineName) {
 	this.airlineName = airlineName;
 }
 
-public int getflightID() {
+public String getflightID() {
 	return flightID;
 }
-public void setflightID(int flightID) {
+public void setflightID(String flightID) {
 	this.flightID = flightID;
 }
-public void setPrice(int price) {
+public void setPrice(String price) {
 	this.price = price;
 	 
 }
-public int getPrice(int price) {
+public String getPrice() {
 	return this.price = price;
 }
 public void setDepature(String depature) {
@@ -78,7 +80,14 @@ public String getArrivalTime() {
 	return this.arrivalTime;
 }
 
+public String getFlightDate() {
+	return this.flightDate;
+}
 
+public static String toString(Flight flight) {
+var format = String.format("Flight: %s %s %s %s %s",flight.getflightID(), flight.getPrice(), flight.flightDate, flight.getAirlineName(), flight.getDestination());
+return format;
+}
 
 
 

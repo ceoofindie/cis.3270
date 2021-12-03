@@ -48,14 +48,15 @@ public class CustomerDao {
 		PreparedStatement read = conn.prepareStatement(CustomerQueries.getCustomerQuery(uuid));
 		
 		ResultSet result = read.executeQuery();
+		result.next();
 		return this.toCustomer(result);
 	}
 	
 	
 	private Customer toCustomer(ResultSet result) throws SQLException {
 		return new Customer(result.getString("customerID"),
-				 result.getString("firstName"),
-				result.getString("lastName"),
+				 result.getString("first"),
+				result.getString("last"),
 				result.getString("userName"), 
 				result.getString("password"),
 				result.getString("dateCreated"));
