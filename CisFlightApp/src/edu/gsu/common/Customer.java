@@ -1,13 +1,13 @@
 package edu.gsu.common;
 
-public class Customer {
-private int customerID = 0;
-String firstName = null;
-String lastName = null;
-String userName = null;
-String password = null;
-Flight[] flights;
 
+public class Customer {
+private String customerID = null;
+private String firstName = null;
+private String lastName = null;
+private String userName = null;
+private String password = null;
+private String dateCreated = null;
 
 public Customer(String firstName, String lastName, String userName, String password) {
 	this.firstName = firstName;
@@ -40,13 +40,8 @@ public String getPassword() {
 public void setPassword(String password) {
 	this.password = password;
 }
-public Flight[] getFlight() {
-	return this.flights;
+public String getCustomerID() {
+	return this.customerID;
 }
-public void setFlight(Flight[] flights) {
-this.flights = flights;
-}
-public void addFlight(Flight[] newFlight) {
-	this.flights = newFlight;
-}
+
 }

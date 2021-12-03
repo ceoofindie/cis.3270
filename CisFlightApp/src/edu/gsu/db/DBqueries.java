@@ -3,12 +3,25 @@ package edu.gsu.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 public class DBqueries {
 
-	public static void main(String[] args) throws Exception{
+	
+public static void main(String[] args) throws Exception{
 getConnection();
 	}
+
+
+//public static ArrayList<String> get() throws Exception{
+//	try {
+//		Connection conn = getConnection();
+//		PreparedStatement state,ent = conn.prepareStatement(null)
+//	}
+//}
+
+
+
 	// Updates to DB
 	public static void post() throws Exception{
 		final String var1 = "Southwest";
@@ -31,7 +44,8 @@ getConnection();
 			System.out.println("Insert Completed");
 		}
 	}
-	public static void createTable()throws Exception {
+	//creates table
+public static void createTable()throws Exception {
 		try {
 			Connection conn = getConnection();
 			PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS customer_flights(customerID int NOT NULL AUTO_INCREMENT, flightID varchar(255),PRIMARY KEY('customerID))");
