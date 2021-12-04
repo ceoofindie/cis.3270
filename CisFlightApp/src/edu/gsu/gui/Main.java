@@ -27,7 +27,7 @@ import javafx.geometry.Pos;
 
 public class Main  extends Application{
 	Stage window;
-	Scene loginScene, signUpScene, menuScene, flightScene;
+	Scene loginScene, signUpScene, menuScene, flightScene, myFlightScene;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -127,6 +127,8 @@ public class Main  extends Application{
 
 		GridPane.setConstraints(flightsButton, 2, 3);
 		Button myFlightsButton = new Button("  My Flights ");
+		myFlightsButton.setOnAction(e -> window.setScene(myFlightScene));
+
 		GridPane.setConstraints(myFlightsButton, 2, 5);
 		menu.setAlignment(Pos.CENTER);
 		GridPane.setMargin(flightsButton, new Insets(20, 10, 20, 10) );
@@ -256,10 +258,51 @@ public class Main  extends Application{
 		buttonHbox.getChildren().addAll(bookButton,sortButton );
 		
 		
+		//Making myFlights Scene
+		VBox myFlightVbox = new VBox();
+		myFlightScene = new Scene(myFlightVbox, 600, 500);
+		
+		TableView<Flight> myFlightTableView = new TableView<Flight>();
+		myFlightTableView.setEditable(true);
+		TableColumn<Flight, String> flightsColumn = new TableColumn<Flight, String>("My Flights");
+		myFlightTableView.getColumns().add(flightsColumn);
+		
+		
+		//create hbox
+		HBox myFlightsHbox = new HBox();
+		
+		
+		
+		//adding buttons
+		Button myFlightMenuButton = new Button("Menu");
+		VBox.setMargin(myFlightMenuButton, new Insets(20, 20, 20, 10) );
+		myFlightMenuButton.setOnAction(e -> window.setScene(menuScene));
+		
+		Button removeFlightButton = new Button("Remove Flight");
+		HBox.setMargin(removeFlightButton, new Insets(20, 20, 20, 10) );
+		
+		//create choice box
+		ChoiceBox<String> flightsChoiceBox =  new ChoiceBox<>();
+		flightsChoiceBox.getItems().add("Flights");
+		flightsChoiceBox.setValue("Flights");
+		HBox.setMargin(flightsChoiceBox, new Insets(20, 20, 20, 10) );
+	
+
+
+
+
+		
+		
+		
+		myFlightVbox.getChildren().addAll(myFlightTableView, myFlightsHbox, myFlightMenuButton);
+		myFlightsHbox.getChildren().addAll(flightsChoiceBox, removeFlightButton);
+		
+		
+		
 		
 		
 		window.setScene(loginScene);
-		window.setTitle("Cis Flight Booking");
+		window.setTitle("CIS Flight Booking");
 		window.show();
 	}
 
