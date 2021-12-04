@@ -1,10 +1,11 @@
 package edu.gsu.common;
 
+
 public class Flight {
 public String flightID = null;
 private String airlineName;
 public String destination = null;
-public String depature = null;
+public String departure = null;
 public String price = null;
 public String departureTime = null;
 public String arrivalTime = null;
@@ -25,13 +26,23 @@ public Flight(String flightID, String airlineName, String destination, String de
 	this.airlineName = airlineName;
 	this.price = price;
 	this.destination = destination;
-	this.depature = departure;
+	this.departure = departure;
 	this.departureTime = departureTime;
 	this.arrivalTime = arrivalTime;
 	this.flightID = flightID;
 	
 }
 
+public Flight(String airlineName, String destination, String departure, String price, String departureTime, String arrivalTime, String flightDate ) {
+	this.airlineName = airlineName;
+	this.price = price;
+	this.destination = destination;
+	this.departure = departure;
+	this.departureTime = departureTime;
+	this.arrivalTime = arrivalTime;
+	
+	
+}
 
 
 public String getAirlineName() {
@@ -55,10 +66,10 @@ public String getPrice() {
 	return this.price = price;
 }
 public void setDepature(String depature) {
-	this.depature = depature;
+	this.departure = depature;
 }
 public String getDepature() {
-	return this.depature;
+	return this.departure;
 }
 public void setDestination(String destination) {
 	this.destination = destination;

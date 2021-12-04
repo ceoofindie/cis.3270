@@ -15,8 +15,14 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import edu.gsu.common.Flight;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
@@ -150,8 +156,6 @@ public class Main  extends Application{
 		TableView<Flight> flightTableView = new TableView<Flight>();
 		flightTableView.setEditable(true);
 		TableColumn<Flight, String> airlinesColumn = new TableColumn<Flight, String>("Airlines");
-		//airlinesColumn.setCellFactory(new PropertyValueFactory<airlinesColumn, String>("airlines"));
-		//book button
 		TableColumn<Flight, String> destinationColumn = new TableColumn<Flight, String>("Destination");
 		TableColumn<Flight, String> departureColumn = new TableColumn<Flight, String>("Departure");
 		TableColumn<Flight, String> priceColumn = new TableColumn<Flight, String>("price");
@@ -166,11 +170,20 @@ public class Main  extends Application{
 		flightTableView.getColumns().add(departureTimeColumn);
 		flightTableView.getColumns().add(arrivalTimeColumn);
 		flightTableView.getColumns().add(flightDateColumn);
+		
+		airlinesColumn.setCellValueFactory(new PropertyValueFactory<>("airlineName"));
+		destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
+		departureColumn.setCellValueFactory(new PropertyValueFactory<>("departure"));
+		priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+		departureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
+		arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
+		flightDateColumn.setCellValueFactory(new PropertyValueFactory<>("flightDate"));
 
+		ObservableList<Flight> allFlightObList = FXCollections.observableArrayList();
 
-
-
-
+		getFlights(allFlightObList);
+		
+		flightTableView.setItems(allFlightObList);
 
 		//make buttons
 		Button bookButton = new Button("Book");
@@ -305,7 +318,14 @@ public class Main  extends Application{
 		window.setTitle("CIS Flight Booking");
 		window.show();
 	}
-
+	
+	public void getFlights(ObservableList<Flight> allFlightObList) throws Exception {
+	Connection conn = edu.gsu.db.DBqueries.getConnection();
+	ResultSet rs = conn.createStatement().executeQuery("Select * from Flights");
+	while(rs.next()) {
+		allFlightObList.add(new Flight(rs.getString("airlines"), rs.getString("destination"), rs.getString("departure"), rs.getString("price"), rs.getString("DepartureTime"), rs.getString("ArrivalTime"), rs.getString("FlightDate")));
+	}
+	}
 	
 
 }
