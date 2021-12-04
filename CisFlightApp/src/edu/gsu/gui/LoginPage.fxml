@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginPage.LoginController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -40,7 +40,7 @@
                   <Insets bottom="1.0" left="69.0" top="7.0" />
                </padding>
             </Label>
-            <TextField />
+            <TextField fx:id="usernameField" />
          </children>
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -50,7 +50,7 @@
                   <Insets bottom="1.0" left="70.0" top="5.0" />
                </padding>
             </Label>
-            <TextField />
+            <TextField fx:id="passwordField" />
          </children>
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
@@ -67,7 +67,7 @@
       </VBox>
       <VBox prefHeight="83.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="62.0" text="Login">
+            <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="62.0" text="Login">
                <VBox.margin>
                   <Insets left="67.0" />
                </VBox.margin>
@@ -82,7 +82,7 @@
             <HBox prefHeight="61.0" prefWidth="168.0">
                <children>
                   <Region prefHeight="57.0" prefWidth="67.0" />
-                  <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" text="Sign up" />
+                  <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#handlerButtonAction" prefHeight="27.0" prefWidth="64.0" text="Sign up" />
                </children>
             </HBox>
          </children>
