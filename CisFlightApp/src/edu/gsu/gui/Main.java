@@ -21,7 +21,7 @@ import javafx.geometry.Pos;
 
 public class Main  extends Application{
 	Stage window;
-	Scene loginScene, signUpScene;
+	Scene loginScene, signUpScene, menuScene;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -65,7 +65,7 @@ public class Main  extends Application{
 		
 		//layout 1 - children are laid out in vertical column
 		
-		loginScene = new Scene(grid, 400, 250);
+		loginScene = new Scene(grid, 400, 200);
 		
 		//signUpScene layout
 		GridPane signUpGrid = new GridPane();
@@ -104,19 +104,36 @@ public class Main  extends Application{
 		Button registerButton = new Button("Sign Up");
 		GridPane.setConstraints(registerButton,2, 8);
 		GridPane.setMargin(registerButton, new Insets(15, 10, 15, 10) );
-
+		registerButton.setOnAction(e -> window.setScene(menuScene));
 
 		
-		
-
 		signUpGrid.setAlignment(Pos.TOP_CENTER);
-
-
-
 
 		signUpGrid.getChildren().addAll(firstNameLabel, firstNameText,lastNameLabel, lastNameText, newUsernameLabel, newUsernameText, newPasswordLabel, newPasswordText, registerButton);
 		
 		signUpScene = new Scene(signUpGrid, 500, 350);
+		
+		// Menu Scene Layout
+		GridPane menu = new GridPane();
+		 menuScene = new Scene(menu,300, 300);
+		 Button flightsButton = new Button("View Flights");
+		GridPane.setConstraints(flightsButton, 2, 3);
+		Button myFlightsButton = new Button("  My Flights ");
+		GridPane.setConstraints(myFlightsButton, 2, 5);
+		menu.setAlignment(Pos.CENTER);
+		GridPane.setMargin(flightsButton, new Insets(20, 10, 20, 10) );
+		GridPane.setMargin(myFlightsButton, new Insets(20, 10, 20, 10) );
+		Button logoutButton = new Button("    Logout      ");
+		GridPane.setConstraints(logoutButton, 2, 7);
+		GridPane.setMargin(logoutButton, new Insets(20, 10, 20, 10) );
+
+		logoutButton.setOnAction(e -> window.setScene(loginScene));
+
+
+
+
+		 menu.getChildren().addAll(flightsButton, myFlightsButton, logoutButton);
+		
 		
 		
 		

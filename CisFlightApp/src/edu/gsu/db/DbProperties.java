@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DbProperties {
+
 	
 	public static Connection getConnection() throws Exception{
 		try {	String driver = "com.mysql.jdbc.Driver";
