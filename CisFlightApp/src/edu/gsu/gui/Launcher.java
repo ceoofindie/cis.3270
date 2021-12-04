@@ -23,26 +23,16 @@ public class Launcher extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		stg = primaryStage;
 		primaryStage.setResizable(false);
-		Parent root = FXMLLoader.load(getClass().getResource("/Users/channo/Documents/GitHub/cis.3270/CisFlightApp/src/edu/gsu/gui/SignUpPage.fxml"));
-		Scene scene = new Scene(root, 300, 275);
+		Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
 		primaryStage.setTitle("The coolest app");
-		primaryStage.setScene(scene);
+		primaryStage.setScene(new Scene(root, 300, 275));
 		primaryStage.show();
 
 		
 	
 	}
 	
-//		try {
-//			BorderPane root = new BorderPane();
-//			Scene scene = new Scene(root,400,400);
-//			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//			primaryStage.setScene(scene);
-//			primaryStage.show();
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+
 	
 	
 	public static void main(String[] args) {
