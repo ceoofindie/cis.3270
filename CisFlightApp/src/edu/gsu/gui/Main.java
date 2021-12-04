@@ -2,14 +2,20 @@ package edu.gsu.gui;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import edu.gsu.common.Flight;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,7 +27,7 @@ import javafx.geometry.Pos;
 
 public class Main  extends Application{
 	Stage window;
-	Scene loginScene, signUpScene, menuScene;
+	Scene loginScene, signUpScene, menuScene, flightScene;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -117,6 +123,8 @@ public class Main  extends Application{
 		GridPane menu = new GridPane();
 		 menuScene = new Scene(menu,300, 300);
 		 Button flightsButton = new Button("View Flights");
+		flightsButton.setOnAction(e -> window.setScene(flightScene));
+
 		GridPane.setConstraints(flightsButton, 2, 3);
 		Button myFlightsButton = new Button("  My Flights ");
 		GridPane.setConstraints(myFlightsButton, 2, 5);
@@ -128,12 +136,124 @@ public class Main  extends Application{
 		GridPane.setMargin(logoutButton, new Insets(20, 10, 20, 10) );
 
 		logoutButton.setOnAction(e -> window.setScene(loginScene));
-
-
-
-
-		 menu.getChildren().addAll(flightsButton, myFlightsButton, logoutButton);
+		menu.getChildren().addAll(flightsButton, myFlightsButton, logoutButton);
 		
+		//Setting up flights layout
+		
+		VBox flightVbox = new VBox();
+		flightScene = new Scene(flightVbox, 600, 500);
+		
+		
+		
+		TableView<Flight> flightTableView = new TableView<Flight>();
+		flightTableView.setEditable(true);
+		TableColumn<Flight, String> airlinesColumn = new TableColumn<Flight, String>("Airlines");
+		//airlinesColumn.setCellFactory(new PropertyValueFactory<airlinesColumn, String>("airlines"));
+		//book button
+		TableColumn<Flight, String> destinationColumn = new TableColumn<Flight, String>("Destination");
+		TableColumn<Flight, String> departureColumn = new TableColumn<Flight, String>("Departure");
+		TableColumn<Flight, String> priceColumn = new TableColumn<Flight, String>("price");
+		TableColumn<Flight, String> departureTimeColumn = new TableColumn<Flight, String>("Departure Time");
+		TableColumn<Flight, String> arrivalTimeColumn = new TableColumn<Flight, String>("Arrival Time");
+		TableColumn<Flight, String> flightDateColumn = new TableColumn<Flight, String>("Date");
+
+		flightTableView.getColumns().add(airlinesColumn);
+		flightTableView.getColumns().add(destinationColumn);
+		flightTableView.getColumns().add(departureColumn);
+		flightTableView.getColumns().add(priceColumn);
+		flightTableView.getColumns().add(departureTimeColumn);
+		flightTableView.getColumns().add(arrivalTimeColumn);
+		flightTableView.getColumns().add(flightDateColumn);
+
+
+
+
+
+
+		//make buttons
+		Button bookButton = new Button("Book");
+		HBox.setMargin(bookButton, new Insets(20, 20, 20, 10) );
+		
+		//Sort Button
+		Button sortButton = new Button("Sort");
+		HBox.setMargin(sortButton, new Insets(20, 20, 20, 10) );
+		//menu button to go back
+		Button menuButton = new Button("Menu");
+		VBox.setMargin(menuButton, new Insets(20, 20, 20, 10) );
+		menuButton.setOnAction(e -> window.setScene(menuScene));
+
+		
+
+
+		
+	
+		
+		//choice box
+		ChoiceBox<String> airlinesChoiceBox =  new ChoiceBox<>();
+		ChoiceBox<String> destinationChoiceBox =  new ChoiceBox<>();
+		ChoiceBox<String> departureChoiceBox =  new ChoiceBox<>();
+		ChoiceBox<String> departureTimeChoiceBox =  new ChoiceBox<>();
+		ChoiceBox<String> dateChoiceBox =  new ChoiceBox<>();
+
+		
+		//getItems returns the obserevable list that you add the items to
+		airlinesChoiceBox.getItems().add("Airlines");
+		airlinesChoiceBox.getItems().add("American");
+		airlinesChoiceBox.getItems().add("Delta");
+		airlinesChoiceBox.getItems().add("Spirit");
+		airlinesChoiceBox.getItems().add("United");
+		airlinesChoiceBox.getItems().add("Frontier");
+		airlinesChoiceBox.getItems().add("JetBlue");
+		airlinesChoiceBox.getItems().add("Southwest");
+		airlinesChoiceBox.getItems().add("Air Canada");
+		//set airlines as default value
+		airlinesChoiceBox.setValue("Airlines");
+		
+		
+		//getItems for sort
+		destinationChoiceBox.getItems().add("Destination");
+		destinationChoiceBox.setValue("Destination");
+		
+		departureChoiceBox.getItems().add("Departure");
+		departureChoiceBox.setValue("Departure");
+
+		departureTimeChoiceBox.getItems().add("Departure Time");
+		departureTimeChoiceBox.setValue("Departure Time");
+		
+		dateChoiceBox.getItems().add("Date");
+		dateChoiceBox.setValue("Date");
+		
+		
+		
+		HBox.setMargin(airlinesChoiceBox, new Insets(40, 10, 40, 10) );
+		HBox.setMargin(destinationChoiceBox, new Insets(40, 10, 40, 10) );
+		HBox.setMargin(departureChoiceBox, new Insets(40, 10, 40, 10) );
+		HBox.setMargin(departureTimeChoiceBox, new Insets(40, 10, 40, 10) );
+		HBox.setMargin(dateChoiceBox, new Insets(40, 10, 40, 10) );
+
+		
+		
+		// Hbox for buttons
+		HBox buttonHbox = new HBox();
+		//created hbox for sorting
+		HBox sortHbox = new HBox();
+		
+
+		
+
+
+
+	
+
+
+		
+		
+		//Edit get children to switch elements position
+		
+		flightVbox.getChildren().addAll(flightTableView, buttonHbox, sortHbox, menuButton);
+		
+		sortHbox.getChildren().addAll(airlinesChoiceBox,destinationChoiceBox,departureChoiceBox,departureTimeChoiceBox, dateChoiceBox );
+		buttonHbox.getChildren().addAll(bookButton,sortButton );
 		
 		
 		
