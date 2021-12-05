@@ -36,7 +36,7 @@ public Flight updateFlight(Flight flight) throws SQLException{
 
 // create flight
 public  Integer createFlight(Flight flight) throws SQLException {
-	PreparedStatement create = conn.prepareStatement(FlightQueries.createFlight(flight.getAirlineName(), flight.getDestination(), flight.getDepature(), flight.getPrice(), flight.getDepartureTime(), flight.getArrivalTime(), flight.getFlightDate()));
+	PreparedStatement create = conn.prepareStatement(FlightQueries.createFlight(flight.getAirlineName(), flight.getDestination(), flight.getDeparture(), flight.getPrice(), flight.getDepartureTime(), flight.getArrivalTime(), flight.getFlightDate()));
 	int result = create.executeUpdate();
 	return result;
 }

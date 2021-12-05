@@ -55,7 +55,7 @@ public static void createTable()throws Exception {
 			System.out.println(e);
 		}
 		finally {
-			System.out.println("Funtion Complete. ");
+			System.out.println("Function Complete. ");
 			}
 	}
 	

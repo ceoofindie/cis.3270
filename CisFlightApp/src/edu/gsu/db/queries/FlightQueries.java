@@ -36,6 +36,6 @@ public static String updateCustomer(Flight flight) {
 			+ "departureTime = '%s' "
 			+ "arrivalTime = '%s' "
 			+ "WHERE flightID = '%s'",
-			flight.getAirlineName(), flight.getDestination(), flight.getDepature(), flight.getPrice(), flight.getDepartureTime(), flight.getArrivalTime()));
+			flight.getAirlineName(), flight.getDestination(), flight.getDeparture(), flight.getPrice(), flight.getDepartureTime(), flight.getArrivalTime()));
 }
 }

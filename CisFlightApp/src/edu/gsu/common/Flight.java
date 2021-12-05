@@ -40,6 +40,7 @@ public Flight(String airlineName, String destination, String departure, String p
 	this.departure = departure;
 	this.departureTime = departureTime;
 	this.arrivalTime = arrivalTime;
+	this.flightDate = flightDate;
 	
 	
 }
@@ -65,10 +66,10 @@ public void setPrice(String price) {
 public String getPrice() {
 	return this.price = price;
 }
-public void setDepature(String depature) {
-	this.departure = depature;
+public void setDeparture(String departure) {
+	this.departure = departure;
 }
-public String getDepature() {
+public String getDeparture() {
 	return this.departure;
 }
 public void setDestination(String destination) {
@@ -78,7 +79,7 @@ public void setDestination(String destination) {
 public String getDestination() {
 	return this.destination;
 }
-public void setDepatureTime(String departureTime) {
+public void setDepartureTime(String departureTime) {
 	this.departureTime = departureTime;
 }
 public String getDepartureTime() {

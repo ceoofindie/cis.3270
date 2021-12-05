@@ -7,4 +7,5 @@ module CisFlightApp {
 	requires java.desktop;
 	
 	opens edu.gsu.gui to javafx.graphics, javafx.fxml;
+	opens edu.gsu.common to javafx.graphics, javafx.base;
 }

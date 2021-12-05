@@ -18,11 +18,16 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import edu.gsu.common.Flight;
+import edu.gsu.db.DBqueries;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
@@ -31,7 +36,7 @@ import javafx.geometry.Pos;
 
 
 
-public class Main  extends Application{
+public class Main  extends Application {
 	Stage window;
 	Scene loginScene, signUpScene, menuScene, flightScene, myFlightScene;
 
@@ -52,6 +57,37 @@ public class Main  extends Application{
 		
 		Button loginButton = new Button("Login");
 		GridPane.setConstraints(loginButton, 2, 5);
+		// if statement to validate login
+		TextField usernameText = new TextField();
+		TextField passwordText = new TextField();
+		Label loginMessageLabel = new Label();
+		GridPane.setConstraints(loginMessageLabel, 2, 7);
+
+		
+//			if(usernameText == false && == false) {
+//				validateLogin(usernameText.getText(), passwordText.getText(), loginButton);
+//			}
+//		
+		loginButton.setOnAction(e ->{
+			if(usernameText.getText().isEmpty() == false && passwordText.getText().isEmpty() == false) {
+				try {
+					validateLogin(usernameText.getText(), passwordText.getText(), loginButton);
+					loginMessageLabel.setText(" ");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}else {
+				loginMessageLabel.setText("Invalid");
+			}
+			
+//			if(loginMessageLabel.getText() == " ") {
+//				window.setScene(menuScene);
+//
+//			}
+		});
+		
 		
 		
 		//designing login screen
@@ -63,16 +99,15 @@ public class Main  extends Application{
 		Label usernameLabel = new Label("Username");
 		GridPane.setConstraints(usernameLabel, 1, 2);
 		
-		TextField usernameText = new TextField();
+		
 		GridPane.setConstraints(usernameText, 2, 2);
 		// setting password field
 		Label passwordLabel = new Label("Password");
 		GridPane.setConstraints(passwordLabel, 1, 4);
 		
-		TextField passwordText = new TextField();
 		GridPane.setConstraints(passwordText, 2, 4);
 		
-		grid.getChildren().addAll( usernameLabel, usernameText, passwordLabel, passwordText, signUpButton, loginButton);
+		grid.getChildren().addAll( usernameLabel, usernameText, passwordLabel, passwordText, signUpButton, loginButton,loginMessageLabel);
 		
 		
 		//layout 1 - children are laid out in vertical column
@@ -149,13 +184,13 @@ public class Main  extends Application{
 		//Setting up flights layout
 		
 		VBox flightVbox = new VBox();
-		flightScene = new Scene(flightVbox, 600, 500);
+		flightScene = new Scene(flightVbox, 700, 500);
 		
 		
 		
 		TableView<Flight> flightTableView = new TableView<Flight>();
 		flightTableView.setEditable(true);
-		TableColumn<Flight, String> airlinesColumn = new TableColumn<Flight, String>("Airlines");
+		TableColumn<Flight, String> airlinesColumn = new TableColumn<Flight, String>("Airline");
 		TableColumn<Flight, String> destinationColumn = new TableColumn<Flight, String>("Destination");
 		TableColumn<Flight, String> departureColumn = new TableColumn<Flight, String>("Departure");
 		TableColumn<Flight, String> priceColumn = new TableColumn<Flight, String>("price");
@@ -326,6 +361,33 @@ public class Main  extends Application{
 		allFlightObList.add(new Flight(rs.getString("airlines"), rs.getString("destination"), rs.getString("departure"), rs.getString("price"), rs.getString("DepartureTime"), rs.getString("ArrivalTime"), rs.getString("FlightDate")));
 	}
 	}
+	
+	
+	
+	public void validateLogin(String username,String password, Button loginButton) throws Exception {
+		DBqueries connectNow = new DBqueries();
+		Connection con = edu.gsu.db.DBqueries.getConnection();
+		
+		String verifyLogin = "SELECT count(1) FROM Customer WHERE Username = '" + username + "' AND Password = '" + password +"'";
+		
+		Statement statement = con.createStatement();
+		ResultSet rs = statement.executeQuery(verifyLogin);
+		
+		while(rs.next()) {
+			if(rs.getInt(1) == 1) {
+				window.setScene(menuScene);
+				
+			}else {
+				
+			}
+		}
+		
+		
+		
+		
+	}
+
+	
 	
 
 }
