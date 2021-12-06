@@ -17,6 +17,12 @@ public Customer(String customerID, String firstName, String lastName, String use
 	this.password = password;
 	this.dateCreated = null;
 }
+public Customer( String firstName, String lastName, String userName, String password) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.userName = userName;
+	this.password = password;
+}
 
 public String getFirstName(){
 	return this.firstName;

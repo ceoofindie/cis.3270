@@ -3,7 +3,7 @@ package edu.gsu.common;
 
 public class Flight {
 public String flightID = null;
-private String airlineName;
+public String airlineName = null;
 public String destination = null;
 public String departure = null;
 public String price = null;
@@ -30,6 +30,7 @@ public Flight(String flightID, String airlineName, String destination, String de
 	this.departureTime = departureTime;
 	this.arrivalTime = arrivalTime;
 	this.flightID = flightID;
+	this.flightDate = flightDate;
 	
 }
 
@@ -53,10 +54,10 @@ public void setAirlineName(String airlineName) {
 	this.airlineName = airlineName;
 }
 
-public String getflightID() {
+public String getFlightID() {
 	return flightID;
 }
-public void setflightID(String flightID) {
+public void setFlightID(String flightID) {
 	this.flightID = flightID;
 }
 public void setPrice(String price) {
@@ -97,7 +98,7 @@ public String getFlightDate() {
 }
 
 public static String toString(Flight flight) {
-var format = String.format("Flight: %s %s %s %s %s",flight.getflightID(), flight.getPrice(), flight.flightDate, flight.getAirlineName(), flight.getDestination());
+var format = String.format("Flight: %s %s %s %s %s",flight.getFlightID(), flight.getPrice(), flight.flightDate, flight.getAirlineName(), flight.getDestination());
 return format;
 }
 

@@ -1,6 +1,8 @@
 package edu.gsu.gui;
 
+
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -17,11 +19,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
+import edu.gsu.db.CustomerDao;
+import edu.gsu.common.Customer;
 import edu.gsu.common.Flight;
+import edu.gsu.common.FlightAppService;
 import edu.gsu.db.DBqueries;
+import edu.gsu.db.queries.CustomerQueries;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,6 +47,8 @@ import javafx.geometry.Pos;
 public class Main  extends Application {
 	Stage window;
 	Scene loginScene, signUpScene, menuScene, flightScene, myFlightScene;
+	
+	FlightAppService flightAppService = new FlightAppService();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -67,11 +77,29 @@ public class Main  extends Application {
 //			if(usernameText == false && == false) {
 //				validateLogin(usernameText.getText(), passwordText.getText(), loginButton);
 //			}
-//		
+
+		Label customerIDLabel;
+		customerIDLabel = new Label();
+	
 		loginButton.setOnAction(e ->{
 			if(usernameText.getText().isEmpty() == false && passwordText.getText().isEmpty() == false) {
 				try {
-					validateLogin(usernameText.getText(), passwordText.getText(), loginButton);
+				var login = FlightAppService.login(usernameText.getText(), passwordText.getText(), loginButton, loginMessageLabel );
+				
+				if(login) {
+					window.setScene(menuScene);
+					
+					String userID = usernameText.getText();
+					
+				
+					
+					String userIDDB = FlightAppService.getUserID(userID);
+					
+					customerIDLabel.setText(userIDDB);
+				
+				}
+				
+
 					loginMessageLabel.setText(" ");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -89,6 +117,8 @@ public class Main  extends Application {
 		});
 		
 		
+	
+
 		
 		//designing login screen
 		GridPane grid = new GridPane();
@@ -147,13 +177,35 @@ public class Main  extends Application {
 		TextField newPasswordText = new TextField();
 		GridPane.setConstraints(newPasswordText,2,7);
 		GridPane.setMargin(newPasswordText, new Insets(20, 10, 20, 10) );
-		
+		Customer newCustomer = new Customer(firstNameText.getText(), lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText());
+
 		Button registerButton = new Button("Sign Up");
 		GridPane.setConstraints(registerButton,2, 8);
 		GridPane.setMargin(registerButton, new Insets(15, 10, 15, 10) );
-		registerButton.setOnAction(e -> window.setScene(menuScene));
-
 		
+		registerButton.setOnAction(e ->{
+		 try {
+			FlightAppService.customerSignUp(firstNameText.getText(), lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			window.setScene(menuScene);
+
+		});
+//		CustomerDao.createCustomer1(newCustomer);
+//		registerButton.setOnAction(e -> {
+//			try {
+//				SignUpDao.add_users(e, firstNameText.getText(), lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText());
+//			} catch (Exception e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		});
+		
+		
+//		SignUpUser(registerButton.getOnAction() ,firstNameText.getText(),lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText() );
+//		registerButton.setOnAction(e2-> window.setScene(menuScene));
 		signUpGrid.setAlignment(Pos.TOP_CENTER);
 
 		signUpGrid.getChildren().addAll(firstNameLabel, firstNameText,lastNameLabel, lastNameText, newUsernameLabel, newUsernameText, newPasswordLabel, newPasswordText, registerButton);
@@ -162,9 +214,15 @@ public class Main  extends Application {
 		
 		// Menu Scene Layout
 		GridPane menu = new GridPane();
-		 menuScene = new Scene(menu,300, 300);
+		VBox customerIDVBox = new VBox();
+		menuScene = new Scene(customerIDVBox,300, 300);
 		 Button flightsButton = new Button("View Flights");
 		flightsButton.setOnAction(e -> window.setScene(flightScene));
+
+		
+		
+		HBox.setMargin(customerIDLabel, new Insets(20, 10, 20, 10) );
+		
 
 		GridPane.setConstraints(flightsButton, 2, 3);
 		Button myFlightsButton = new Button("  My Flights ");
@@ -177,9 +235,13 @@ public class Main  extends Application {
 		Button logoutButton = new Button("    Logout      ");
 		GridPane.setConstraints(logoutButton, 2, 7);
 		GridPane.setMargin(logoutButton, new Insets(20, 10, 20, 10) );
-
+		
+		
 		logoutButton.setOnAction(e -> window.setScene(loginScene));
+		customerIDVBox.getChildren().addAll(customerIDLabel, menu);
 		menu.getChildren().addAll(flightsButton, myFlightsButton, logoutButton);
+
+
 		
 		//Setting up flights layout
 		
@@ -190,14 +252,18 @@ public class Main  extends Application {
 		
 		TableView<Flight> flightTableView = new TableView<Flight>();
 		flightTableView.setEditable(true);
-		TableColumn<Flight, String> airlinesColumn = new TableColumn<Flight, String>("Airline");
+		
+		
+		TableColumn<Flight, String> flightIDColumn = new TableColumn<Flight, String>("Flight ID");
+		TableColumn<Flight, String> airlinesColumn = new TableColumn<Flight, String>("Airlines");
 		TableColumn<Flight, String> destinationColumn = new TableColumn<Flight, String>("Destination");
 		TableColumn<Flight, String> departureColumn = new TableColumn<Flight, String>("Departure");
-		TableColumn<Flight, String> priceColumn = new TableColumn<Flight, String>("price");
+		TableColumn<Flight, String> priceColumn = new TableColumn<Flight, String>("Price");
 		TableColumn<Flight, String> departureTimeColumn = new TableColumn<Flight, String>("Departure Time");
 		TableColumn<Flight, String> arrivalTimeColumn = new TableColumn<Flight, String>("Arrival Time");
 		TableColumn<Flight, String> flightDateColumn = new TableColumn<Flight, String>("Date");
-
+	
+		flightTableView.getColumns().add(flightIDColumn);
 		flightTableView.getColumns().add(airlinesColumn);
 		flightTableView.getColumns().add(destinationColumn);
 		flightTableView.getColumns().add(departureColumn);
@@ -206,13 +272,17 @@ public class Main  extends Application {
 		flightTableView.getColumns().add(arrivalTimeColumn);
 		flightTableView.getColumns().add(flightDateColumn);
 		
+
+		flightIDColumn.setCellValueFactory(new PropertyValueFactory<>("flightID"));
 		airlinesColumn.setCellValueFactory(new PropertyValueFactory<>("airlineName"));
 		destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
 		departureColumn.setCellValueFactory(new PropertyValueFactory<>("departure"));
 		priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 		departureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
 		arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
-		flightDateColumn.setCellValueFactory(new PropertyValueFactory<>("flightDate"));
+		flightDateColumn.setCellValueFactory(new PropertyValueFactory<>("FlightDate"));
+
+
 
 		ObservableList<Flight> allFlightObList = FXCollections.observableArrayList();
 
@@ -223,6 +293,10 @@ public class Main  extends Application {
 		//make buttons
 		Button bookButton = new Button("Book");
 		HBox.setMargin(bookButton, new Insets(20, 20, 20, 10) );
+		
+//		bookButton.setOnAction(e ->{
+//			FlightAppService.addFlightToCustomer(STYLESHEET_MODENA, STYLESHEET_CASPIAN);
+//		});
 		
 		//Sort Button
 		Button sortButton = new Button("Sort");
@@ -284,9 +358,14 @@ public class Main  extends Application {
 		
 		
 		// Hbox for buttons
-		HBox buttonHbox = new HBox();
+		GridPane buttonGrid = new GridPane();
 		//created hbox for sorting
 		HBox sortHbox = new HBox();
+		
+		buttonGrid.setAlignment(Pos.CENTER);
+		GridPane.setConstraints(bookButton, 2, 6);
+
+
 		
 
 		
@@ -300,10 +379,10 @@ public class Main  extends Application {
 		
 		//Edit get children to switch elements position
 		
-		flightVbox.getChildren().addAll(flightTableView, buttonHbox, sortHbox, menuButton);
+		flightVbox.getChildren().addAll(flightTableView, buttonGrid,  menuButton);
 		
 		sortHbox.getChildren().addAll(airlinesChoiceBox,destinationChoiceBox,departureChoiceBox,departureTimeChoiceBox, dateChoiceBox );
-		buttonHbox.getChildren().addAll(bookButton,sortButton );
+		buttonGrid.getChildren().addAll(bookButton );
 		
 		
 		//Making myFlights Scene
@@ -358,13 +437,13 @@ public class Main  extends Application {
 	Connection conn = edu.gsu.db.DBqueries.getConnection();
 	ResultSet rs = conn.createStatement().executeQuery("Select * from Flights");
 	while(rs.next()) {
-		allFlightObList.add(new Flight(rs.getString("airlines"), rs.getString("destination"), rs.getString("departure"), rs.getString("price"), rs.getString("DepartureTime"), rs.getString("ArrivalTime"), rs.getString("FlightDate")));
+		allFlightObList.add(new Flight(rs.getString("flightID"), rs.getString("airlines"), rs.getString("destination"), rs.getString("departure"), rs.getString("price"), rs.getString("DepartureTime"), rs.getString("ArrivalTime"), rs.getString("FlightDate")));
 	}
 	}
 	
 	
 	
-	public void validateLogin(String username,String password, Button loginButton) throws Exception {
+	public void validateLogin(String username,String password, Button loginButton, Label loginLabel) throws Exception {
 		DBqueries connectNow = new DBqueries();
 		Connection con = edu.gsu.db.DBqueries.getConnection();
 		
@@ -377,8 +456,6 @@ public class Main  extends Application {
 			if(rs.getInt(1) == 1) {
 				window.setScene(menuScene);
 				
-			}else {
-				
 			}
 		}
 		
@@ -386,6 +463,55 @@ public class Main  extends Application {
 		
 		
 	}
+	public static void SignUpUser(EventHandler<ActionEvent> eventHandler, String firstname, String lastname, String username, String password) throws Exception {
+		Connection conn = null;
+		PreparedStatement psInsert = null;
+		PreparedStatement psCheckUserExists = null;	
+		ResultSet rs = null;
+		
+		try {
+			conn = DBqueries.getConnection();
+			psCheckUserExists = conn.prepareStatement("SELECT * FROM Customer WHERE Username = %s");
+			psCheckUserExists.setString(1, username);
+			rs = psCheckUserExists.executeQuery();
+			
+			if(rs.isBeforeFirst()) {
+				System.out.println("User already exists");
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setContentText("You cant use this username");
+				alert.show();
+				
+			}else {
+				psInsert = conn.prepareStatement("INSERT INTO Customer(first, last, username, password VALUES (%s,%s,%s,%s)");
+				psInsert.setString(1,firstname);
+				psInsert.setString(2,lastname);
+				psInsert.setString(3,username);
+				psInsert.setString(4,password);
+				psInsert.executeUpdate();
+
+
+			}
+			}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				}catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(psCheckUserExists != null) {
+				try {
+					psCheckUserExists.close();
+				}catch(SQLException e) {
+					
+				}
+				
+			}
+		}
+	}
+	
 
 	
 	

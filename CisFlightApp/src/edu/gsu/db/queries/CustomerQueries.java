@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import edu.gsu.common.Customer;
+import javafx.scene.control.TextField;
 
 public class CustomerQueries {
 	static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -17,8 +18,21 @@ public class CustomerQueries {
 		return query;
 	}
 	
+	public static String getCustomerID(String username) {
+		var query = String.format("Select customerID from project.Customer where Username = '%s'",username);
+		System.out.println(query);
+		return query;
+	}
+	
 	//create customer query
 	public static String createCustomer(String firstName, String lastName, String username, String password) {
+		var query = String.format("INSERT INTO project.Customer (customerID, first, last, Username, Password, dateCreated) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", 
+				UUID.randomUUID().toString(), firstName, lastName, username, password, formatter.format(new Date()).toString());
+		System.out.println(query);
+		return query;
+	}
+	
+	public static String createCustomer1(TextField firstName, TextField lastName, TextField username, TextField password) {
 		var query = String.format("INSERT INTO project.Customer (customerID, first, last, Username, Password, dateCreated) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", 
 				UUID.randomUUID().toString(), firstName, lastName, username, password, formatter.format(new Date()).toString());
 		System.out.println(query);
