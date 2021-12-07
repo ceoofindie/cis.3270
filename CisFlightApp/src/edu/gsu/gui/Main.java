@@ -237,22 +237,21 @@ public class Main  extends Application {
 		Button myFlightsButton = new Button("  My Flights ");
 		
 		TableView<CustomerFlights> myFlightTableView = new TableView<CustomerFlights>();
-		TableView<CustomerFlights> myFlightTableViewRefresh = new TableView<CustomerFlights>();
 		
 
 		ObservableList<CustomerFlights> allMyFlightObList = FXCollections.observableArrayList();
-		ObservableList<CustomerFlights> allMyFlightObList2 = FXCollections.observableArrayList();
 	
 		myFlightsButton.setOnAction(e -> {
 		window.setScene(myFlightScene);
-			if(allMyFlightObList2.equals(allMyFlightObList) == false ) {
+			 
 				try {
-					getMyFlights(allMyFlightObList2);
+					getMyFlights(allMyFlightObList,customerIDLabel.getText());
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block					e1.printStackTrace();
+					// TODO Auto-generated catch block					
+					e1.printStackTrace();
 			}
-				myFlightTableView.setItems(allMyFlightObList2);
-				}
+				myFlightTableView.setItems(allMyFlightObList);
+				
 	});
 
 		GridPane.setConstraints(myFlightsButton, 2, 5);
@@ -452,7 +451,7 @@ public class Main  extends Application {
 		HBox myFlightsHbox = new HBox();
 	
 
-		getMyFlights(allMyFlightObList);
+		getMyFlights(allMyFlightObList,customerIDLabel.getText());
 		myFlightTableView.setItems(allMyFlightObList);
 		
 		//adding buttons
@@ -467,14 +466,22 @@ public class Main  extends Application {
 		//create choice box
 		Button refreshButton =  new Button("Refresh");
 		
-		CustomerFlights newCustomerFlight = new CustomerFlights(customerID2, customerID2, customerID2);
+		
 
-//		removeFlightButton.setOnAction(e -> {  
-//			CustomerFlights newCustomerFlight;
-//			newCustomerFlight = new CustomerFlights(customerID2, customerID2, customerID2);
-//
-//			String flightID =newCustomerFlight.getFlightID();
-//		});
+		removeFlightButton.setOnAction(e -> {  
+			CustomerFlights newCustomerFlight;
+			newCustomerFlight = myFlightTableView.getSelectionModel().getSelectedItem();;
+			myFlightTableView.getItems().remove(newCustomerFlight);		
+			String flightID =newCustomerFlight.getFlightID();
+			
+			try {
+				FlightAppService.removeFlightFromCustomer(customerIDLabel.getText(), flightID);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		});
 		
 //		
 //		refreshButton.setOnAction(e -> {
@@ -523,9 +530,9 @@ public class Main  extends Application {
 	}
 	}
 	
-	public void getMyFlights(ObservableList<CustomerFlights> allMyFlightObList) throws Exception {
+	public void getMyFlights(ObservableList<CustomerFlights> allMyFlightObList, String customerID) throws Exception {
 		Connection conn = edu.gsu.db.DBqueries.getConnection();
-		ResultSet rs = conn.createStatement().executeQuery("Select * from customer_flights1 ");
+		ResultSet rs = conn.createStatement().executeQuery("Select * from project.customer_flights1 where customerID = '"+customerID+"'");
 		allMyFlightObList.clear();
 		while(rs.next()) {
 			allMyFlightObList.add(new CustomerFlights(rs.getString("flightID"),rs.getString("dateCreated"),rs.getString("customerID")));

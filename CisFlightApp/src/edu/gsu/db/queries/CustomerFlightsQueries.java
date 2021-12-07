@@ -23,7 +23,7 @@ static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	}
 	
 	public static String deleteCustomerFlight(String customerID, String flightID) {
-		var query = (String.format("DELETE FROM project.Flights WHERE flightID AND customerID = '%s', '%s", customerID, flightID));
+		var query = (String.format("DELETE FROM customer_flights1 WHERE flightID = '%s' AND customerID = '%s'", flightID, customerID));
 		System.out.println(query);
 		return query;
 	}

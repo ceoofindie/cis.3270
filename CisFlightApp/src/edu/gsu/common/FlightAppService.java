@@ -85,8 +85,8 @@ public class FlightAppService {
 //	}
 //	
 	
-	public void removeFlightFromCustomer(String customerID, String flightID) {
-		
+	public static void removeFlightFromCustomer(String customerID, String flightID) throws SQLException {
+		customerFlightsDao.deleteCustomerFlights(customerID, flightID);
 		
 	}
 	public void sort() {
