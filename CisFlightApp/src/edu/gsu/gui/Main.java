@@ -290,7 +290,10 @@ public class Main  extends Application {
 				myFlightTableView.setItems(allMyFlightObList);
 				
 	});
+		
+	
 		Button adminButton = new Button("admin");
+		
 		adminButton.setBackground(null);
 
 		GridPane.setMargin(adminButton, new Insets(20, 10, 20, 10) );
@@ -488,7 +491,7 @@ public class Main  extends Application {
 		VBox.setMargin(myFlightMenuButton, new Insets(20, 20, 20, 10) );
 		myFlightMenuButton.setOnAction(e -> window.setScene(menuScene));
 		
-		Button removeFlightButton = new Button("Remove Flight");
+		Button removeFlightButton = new Button("Cancel Flight");
 		HBox.setMargin(removeFlightButton, new Insets(20, 20, 20, 10) );
 		
 		GridPane.setMargin(removeFlightButton, new Insets(20, 20, 20, 10) );
@@ -535,13 +538,15 @@ public class Main  extends Application {
 		GridPane adminGridPane2 = new GridPane();
 		
 		
-
-
-		
+	
+	
 			adminButton.setOnAction(e ->{
+				
 				window.setScene(adminScene);
+				
 			});
-			
+	
+		
 		
 
 		Label airline = new Label("Airline:            ");
@@ -564,7 +569,11 @@ public class Main  extends Application {
 		Button adminMenuButton = new Button("Menu");
 		GridPane.setConstraints(adminMenuButton, 0, 5);
 		Button createFlight = new Button("New Flight");
+		
+		
 		createFlight.setOnAction(e ->{
+			if(airlineText.getText().isEmpty()==false && destinationText.getText().isEmpty()== false && departureText.getText().isEmpty()== false  && departureTimeText.getText().isEmpty()== false
+					&& priceText.getText().isEmpty()== false && arrivalTimeText.getText().isEmpty()== false) {
 			try {
 				FlightAppService.createFlight(airlineText.getText(), destinationText.getText(), departureText.getText(),priceText.getText(), departureTimeText.getText(), arrivalTimeText.getText() );
 			emptyLabel4.setText("Success");
@@ -572,15 +581,17 @@ public class Main  extends Application {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			}
 		});
 		
 		GridPane.setMargin(createFlight, new Insets(0, 10, 10, 10) );
 //		GridPane.setMargin(adminMenuButton, new Insets(20, 20, 20, 10) );
 		adminGridPane2.setAlignment(Pos.TOP_LEFT);
+		
 		adminMenuButton.setOnAction(e ->{
 			window.setScene(menuScene);
 		});
-
+		
 		
 		HBox.setMargin(airline, new Insets(20, 10, 20, 10) );
 		HBox.setMargin(airlineText, new Insets(20, 10, 20, 10) );
