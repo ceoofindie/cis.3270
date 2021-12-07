@@ -26,6 +26,7 @@ import java.sql.Statement;
 
 import edu.gsu.db.CustomerDao;
 import edu.gsu.common.Customer;
+import edu.gsu.common.CustomerFlights;
 import edu.gsu.common.Flight;
 import edu.gsu.common.FlightAppService;
 import edu.gsu.db.DBqueries;
@@ -234,7 +235,25 @@ public class Main  extends Application {
 
 		GridPane.setConstraints(flightsButton, 2, 3);
 		Button myFlightsButton = new Button("  My Flights ");
-		myFlightsButton.setOnAction(e -> window.setScene(myFlightScene));
+		
+		TableView<CustomerFlights> myFlightTableView = new TableView<CustomerFlights>();
+		TableView<CustomerFlights> myFlightTableViewRefresh = new TableView<CustomerFlights>();
+		
+
+		ObservableList<CustomerFlights> allMyFlightObList = FXCollections.observableArrayList();
+		ObservableList<CustomerFlights> allMyFlightObList2 = FXCollections.observableArrayList();
+	
+		myFlightsButton.setOnAction(e -> {
+		window.setScene(myFlightScene);
+			if(allMyFlightObList2.equals(allMyFlightObList) == false ) {
+				try {
+					getMyFlights(allMyFlightObList2);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block					e1.printStackTrace();
+			}
+				myFlightTableView.setItems(allMyFlightObList2);
+				}
+	});
 
 		GridPane.setConstraints(myFlightsButton, 2, 5);
 		menu.setAlignment(Pos.CENTER);
@@ -318,7 +337,7 @@ public class Main  extends Application {
 		bookButton.setOnAction(e -> {
 			Flight newFlight = flightTableView.getSelectionModel().getSelectedItem();
 			String flightID =newFlight.getFlightID();
-			System.out.println(customerID2);
+	
 			
 			try {
 				FlightAppService.addFlightToCustomer(customerIDLabel.getText()
@@ -413,16 +432,28 @@ public class Main  extends Application {
 		VBox myFlightVbox = new VBox();
 		myFlightScene = new Scene(myFlightVbox, 600, 500);
 		
-		TableView<Flight> myFlightTableView = new TableView<Flight>();
 		myFlightTableView.setEditable(true);
-		TableColumn<Flight, String> flightsColumn = new TableColumn<Flight, String>("My Flights");
-		myFlightTableView.getColumns().add(flightsColumn);
+		TableColumn<CustomerFlights, String> myFlightsColumn = new TableColumn<CustomerFlights, String>("My Flights");
+		TableColumn<CustomerFlights, String> dateCreatedColumn = new TableColumn<CustomerFlights, String>("Booking Date");
+		myFlightTableView.getColumns().add(myFlightsColumn);
+		myFlightTableView.getColumns().add(dateCreatedColumn);
+		dateCreatedColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+		myFlightsColumn.setCellValueFactory(new PropertyValueFactory<>("flightID"));
 		
 		
+//		
+//		TableColumn<CustomerFlights, String> myFlightsColumnRefresh = new TableColumn<CustomerFlights, String>("My Flights");
+//		TableColumn<CustomerFlights, String> dateCreatedColumnRefresh = new TableColumn<CustomerFlights, String>("Booking Date");
+//		myFlightTableView.getColumns().add(myFlightsColumnRefresh);
+//		myFlightTableView.getColumns().add(dateCreatedColumnRefresh);
+//		dateCreatedColumnRefresh.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+		myFlightsColumn.setCellValueFactory(new PropertyValueFactory<>("flightID"));
 		//create hbox
 		HBox myFlightsHbox = new HBox();
-		
-		
+	
+
+		getMyFlights(allMyFlightObList);
+		myFlightTableView.setItems(allMyFlightObList);
 		
 		//adding buttons
 		Button myFlightMenuButton = new Button("Menu");
@@ -432,21 +463,48 @@ public class Main  extends Application {
 		Button removeFlightButton = new Button("Remove Flight");
 		HBox.setMargin(removeFlightButton, new Insets(20, 20, 20, 10) );
 		
+		
 		//create choice box
-		ChoiceBox<String> flightsChoiceBox =  new ChoiceBox<>();
-		flightsChoiceBox.getItems().add("Flights");
-		flightsChoiceBox.setValue("Flights");
-		HBox.setMargin(flightsChoiceBox, new Insets(20, 20, 20, 10) );
+		Button refreshButton =  new Button("Refresh");
+		
+		CustomerFlights newCustomerFlight = new CustomerFlights(customerID2, customerID2, customerID2);
+
+//		removeFlightButton.setOnAction(e -> {  
+//			CustomerFlights newCustomerFlight;
+//			newCustomerFlight = new CustomerFlights(customerID2, customerID2, customerID2);
+//
+//			String flightID =newCustomerFlight.getFlightID();
+//		});
+		
+//		
+//		refreshButton.setOnAction(e -> {
+//			if(allMyFlightObList2 != allMyFlightObList ) {
+//			try {
+//				myFlightVbox.getChildren().addAll(myFlightTableViewRefresh, myFlightsHbox, myFlightMenuButton);
+//				getMyFlights(allMyFlightObList);
+//
+//			} catch (Exception e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			myFlightTableViewRefresh.setItems(allMyFlightObList);
+//			}else {
+//				System.out.println("Tables are the same");
+//			}
+//		});
+		
+		
+		HBox.setMargin(refreshButton, new Insets(20, 20, 20, 10) );
 	
 
+	
 
-
-
+		
 		
 		
 		
 		myFlightVbox.getChildren().addAll(myFlightTableView, myFlightsHbox, myFlightMenuButton);
-		myFlightsHbox.getChildren().addAll(flightsChoiceBox, removeFlightButton);
+		myFlightsHbox.getChildren().addAll(refreshButton, removeFlightButton);
 		
 		
 		
@@ -464,6 +522,15 @@ public class Main  extends Application {
 		allFlightObList.add(new Flight(rs.getString("flightID"), rs.getString("airlines"), rs.getString("destination"), rs.getString("departure"), rs.getString("price"), rs.getString("DepartureTime"), rs.getString("ArrivalTime"), rs.getString("FlightDate")));
 	}
 	}
+	
+	public void getMyFlights(ObservableList<CustomerFlights> allMyFlightObList) throws Exception {
+		Connection conn = edu.gsu.db.DBqueries.getConnection();
+		ResultSet rs = conn.createStatement().executeQuery("Select * from customer_flights1 ");
+		allMyFlightObList.clear();
+		while(rs.next()) {
+			allMyFlightObList.add(new CustomerFlights(rs.getString("flightID"),rs.getString("dateCreated"),rs.getString("customerID")));
+		}
+		}
 	
 	
 	
