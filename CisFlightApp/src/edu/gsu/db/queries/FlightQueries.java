@@ -21,7 +21,7 @@ public static String getFlightID(String uuid) {
 }
 
 //create flight
-public static String createFlight(String airlines, String destination, String departure, String price, String departureTime, String arrivalTime, String FlightDate) {
+public static String createFlight(String airlines, String destination, String departure, String price, String departureTime, String arrivalTime) {
 	var query = String.format("INSERT INTO project.Flights (flightID, airlines, destination, departure, price, departureTime, arrivalTime, FlightDate) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 			UUID.randomUUID().toString(), airlines, destination, departure, price, departureTime, arrivalTime, formatter.format(new Date()).toString());
 		System.out.println(query);

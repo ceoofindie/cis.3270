@@ -55,6 +55,11 @@ public class FlightAppService {
 		
 	}
 	
+	public static void createFlight(String airline, String destination, String departure, String price, String DepartureTime, String arrivalTime ) throws SQLException {
+		flightDao.createFlight(airline, destination, departure, price, DepartureTime, arrivalTime);
+		
+	}
+	
 	public static void customerSignUp(String first, String last, String username, String password) throws SQLException {
 		try {
 			customerDao.createCustomer(first, last, username, password);
