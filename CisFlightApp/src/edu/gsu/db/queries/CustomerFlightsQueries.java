@@ -16,7 +16,7 @@ static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	}
 	
 	public static String createCustomerFlight(String customerID, String flightID) {
-		var query = String.format("INSERT INTO project.customer_flights (customerID, flightID, dateCreated) VALUES ('%s', '%s', '%s')", 
+		var query = String.format("INSERT INTO project.customer_flights1 (customerID, flightID, dateCreated) VALUES ('%s', '%s', '%s')", 
 				 customerID, flightID, formatter.format(new Date()).toString());
 		System.out.println(query);
 		return query;

@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 
 public class FlightAppService {
 
-	FlightDao flightDao;
+	static FlightDao flightDao;
 	static CustomerDao customerDao;
 	static CustomerFlightsDao customerFlightsDao;
 	
@@ -70,6 +70,18 @@ public class FlightAppService {
 		
 		
 	}
+//	public static String  getFlightID(String username) throws SQLException  {
+//		try {
+//			return flightDao.getFlightID(username).toString();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		
+//	}
+//	
 	
 	public void removeFlightFromCustomer(String customerID, String flightID) {
 		

@@ -80,6 +80,10 @@ public class Main  extends Application {
 
 		Label customerIDLabel;
 		customerIDLabel = new Label();
+		
+		
+		
+		
 	
 		loginButton.setOnAction(e ->{
 			if(usernameText.getText().isEmpty() == false && passwordText.getText().isEmpty() == false) {
@@ -89,14 +93,17 @@ public class Main  extends Application {
 				if(login) {
 					window.setScene(menuScene);
 					
-					String userID = usernameText.getText();
 					
+					//String username = usernameText.getText();
+//					Customer newCustomer = CustomerDao.getCustomer(usernameText.getText());
+					Customer newCustomer = CustomerDao.getCustomer(usernameText.getText());
+					String customerID = newCustomer.getCustomerID();
+//				
+//					
+//					String userIDDB = FlightAppService.getUserID(username);
+
 				
-					
-					String userIDDB = FlightAppService.getUserID(userID);
-					
-					customerIDLabel.setText(userIDDB);
-				
+					customerIDLabel.setText(customerID);
 				}
 				
 
@@ -115,10 +122,12 @@ public class Main  extends Application {
 //
 //			}
 		});
-		
+	
 		
 	
 
+		String customerID2 = customerIDLabel.getText();
+	
 		
 		//designing login screen
 		GridPane grid = new GridPane();
@@ -177,7 +186,6 @@ public class Main  extends Application {
 		TextField newPasswordText = new TextField();
 		GridPane.setConstraints(newPasswordText,2,7);
 		GridPane.setMargin(newPasswordText, new Insets(20, 10, 20, 10) );
-		Customer newCustomer = new Customer(firstNameText.getText(), lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText());
 
 		Button registerButton = new Button("Sign Up");
 		GridPane.setConstraints(registerButton,2, 8);
@@ -306,10 +314,26 @@ public class Main  extends Application {
 		VBox.setMargin(menuButton, new Insets(20, 20, 20, 10) );
 		menuButton.setOnAction(e -> window.setScene(menuScene));
 
+		 {
+		bookButton.setOnAction(e -> {
+			Flight newFlight = flightTableView.getSelectionModel().getSelectedItem();
+			String flightID =newFlight.getFlightID();
+			System.out.println(customerID2);
+			
+			try {
+				FlightAppService.addFlightToCustomer(customerIDLabel.getText()
+,flightID);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+		});
+		}
+			
 		
 
 
-		
 	
 		
 		//choice box
@@ -371,7 +395,7 @@ public class Main  extends Application {
 		
 
 
-
+		
 	
 
 
@@ -512,7 +536,7 @@ public class Main  extends Application {
 		}
 	}
 	
-
+	
 	
 	
 

@@ -51,6 +51,8 @@ public Flight getFlight(String uuid) throws SQLException{
 	
 	
 }
+
+
 //read flight
 private Flight toFlight(ResultSet result) throws SQLException{
 	return new Flight(result.getString("flightID"),

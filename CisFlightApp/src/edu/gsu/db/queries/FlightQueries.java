@@ -13,6 +13,13 @@ public static String getFlightQuery(String uuid) {
 	System.out.println(query);
 	return query;
 }
+
+public static String getFlightID(String uuid) {
+	var query = String.format("Select flightID from project.Flights WHERE flightID = '%s'", uuid);
+	System.out.println(query);
+	return query;
+}
+
 //create flight
 public static String createFlight(String airlines, String destination, String departure, String price, String departureTime, String arrivalTime, String FlightDate) {
 	var query = String.format("INSERT INTO project.Flights (flightID, airlines, destination, departure, price, departureTime, arrivalTime, FlightDate) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",

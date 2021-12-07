@@ -17,6 +17,11 @@ public class CustomerQueries {
 		System.out.println(query);
 		return query;
 	}
+	public static String getCustomerQuery2(String username) {
+		var query = String.format("Select * from project.Customer where Username = '%s'",username);
+		System.out.println(query);
+		return query;
+	}
 	
 	public static String getCustomerID(String username) {
 		var query = String.format("Select customerID from project.Customer where Username = '%s'",username);

@@ -13,7 +13,7 @@ import edu.gsu.common.Customer;
 import edu.gsu.db.queries.CustomerQueries;
 //data access object 
 public class CustomerDao {
-	   Connection conn;
+	  static Connection conn;
 	
 	public CustomerDao(){
 		try {
@@ -54,22 +54,22 @@ public class CustomerDao {
 	
 	}
 
-	public Customer getCustomer(String uuid) throws SQLException{
-		PreparedStatement read = conn.prepareStatement(CustomerQueries.getCustomerQuery(uuid));
+	public static Customer getCustomer(String uuid) throws SQLException{
+		PreparedStatement read = conn.prepareStatement(CustomerQueries.getCustomerQuery2(uuid));
 		
 		ResultSet result = read.executeQuery();
 		result.next();
-		return this.toCustomer(result);
+		return toCustomer(result);
 	}
-	public  ResultSet getCustomerID(String username) throws SQLException{
+	public  Customer getCustomerID(String username) throws SQLException{
 		PreparedStatement read = conn.prepareStatement(CustomerQueries.getCustomerID(username));
 		
 		ResultSet result = read.executeQuery();
 		
-		return result;
+		return this.toCustomer(result);
 	}
 	
-	private Customer toCustomer(ResultSet result) throws SQLException {
+	private static Customer toCustomer(ResultSet result) throws SQLException {
 		return new Customer(result.getString("customerID"),
 				 result.getString("first"),
 				result.getString("last"),

@@ -23,7 +23,10 @@ public Customer( String firstName, String lastName, String userName, String pass
 	this.userName = userName;
 	this.password = password;
 }
-
+public Customer(String userName, String password) {
+	this.userName = userName;
+	this.password = password;
+}
 public String getFirstName(){
 	return this.firstName;
 }
