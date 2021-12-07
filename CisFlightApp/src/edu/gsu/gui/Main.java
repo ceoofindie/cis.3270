@@ -10,6 +10,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -18,6 +20,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,9 +66,14 @@ public class Main  extends Application {
 		
 		
 		//Set sign up button to lead to sign up scene
-		Button signUpButton = new Button("Sign Up");
-		GridPane.setConstraints(signUpButton, 3, 5);
+		Button signUpButton = new Button("Not a member yet? Sign Up here!");
+		
+		
+		
+		signUpButton.setBackground(null);
+
 		signUpButton.setOnAction(e -> window.setScene(signUpScene));
+		
 		
 		Button loginButton = new Button("Login");
 		GridPane.setConstraints(loginButton, 2, 5);
@@ -131,28 +140,52 @@ public class Main  extends Application {
 	
 		
 		//designing login screen
+		HBox loginHbox = new  HBox();
+		VBox loginVbox = new VBox();
+		
 		GridPane grid = new GridPane();
 		grid.setVgap(10);
 		grid.setHgap(10);
-		grid.setPadding(new Insets(10, 10, 10, 10));
+
+		grid.setPadding(new Insets(0, 20, 0, 10));
 		
-		Label usernameLabel = new Label("Username");
+		Label usernameLabel = new Label("Username:");
 		GridPane.setConstraints(usernameLabel, 1, 2);
 		
 		
 		GridPane.setConstraints(usernameText, 2, 2);
 		// setting password field
-		Label passwordLabel = new Label("Password");
+		Label passwordLabel = new Label("Password:");
 		GridPane.setConstraints(passwordLabel, 1, 4);
 		
 		GridPane.setConstraints(passwordText, 2, 4);
 		
-		grid.getChildren().addAll( usernameLabel, usernameText, passwordLabel, passwordText, signUpButton, loginButton,loginMessageLabel);
+//		loginHbox.getChildren().addAll(signUpButton);
+		InputStream GSUInput = new FileInputStream("/Users/channo/Downloads/Georgia_State_University_Logo.svg.png");
 		
+		Image GSU = new Image(GSUInput);
+		
+		ImageView GSULogo = new ImageView();
+		GSULogo.setImage(GSU);
+		
+		GSULogo.setFitHeight(75);
+		GSULogo.setFitWidth(75);
+		
+		
+		GridPane imageGrid = new GridPane();
+		imageGrid.setAlignment(Pos.TOP_RIGHT);
+		
+		imageGrid.getChildren().addAll(GSULogo)	;
+		
+		grid.getChildren().addAll(loginHbox, usernameLabel, usernameText, passwordLabel, passwordText, loginButton,loginMessageLabel);
+		
+		loginHbox.getChildren().addAll(imageGrid);
+		
+		loginVbox.getChildren().addAll(grid, signUpButton);
 		
 		//layout 1 - children are laid out in vertical column
 		
-		loginScene = new Scene(grid, 400, 200);
+		loginScene = new Scene(loginVbox, 450, 275);
 		
 		//signUpScene layout
 		GridPane signUpGrid = new GridPane();
@@ -193,28 +226,26 @@ public class Main  extends Application {
 		GridPane.setMargin(registerButton, new Insets(15, 10, 15, 10) );
 		
 		registerButton.setOnAction(e ->{
+			if(newUsernameText.getText().isEmpty() == false && newPasswordText.getText().isEmpty() == false && firstNameText.getText().isEmpty() == false && lastNameText.getText().isEmpty() == false ) {
+
 		 try {
 			FlightAppService.customerSignUp(firstNameText.getText(), lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText());
+			window.setScene(menuScene);
+			Customer newCustomer = CustomerDao.getCustomer(newUsernameText.getText());
+			String customerID = newCustomer.getCustomerID();
+			customerIDLabel.setText(customerID);
+
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-			window.setScene(menuScene);
-
+			
+			}else {
+				
+			}
 		});
-//		CustomerDao.createCustomer1(newCustomer);
-//		registerButton.setOnAction(e -> {
-//			try {
-//				SignUpDao.add_users(e, firstNameText.getText(), lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText());
-//			} catch (Exception e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//		});
 		
-		
-//		SignUpUser(registerButton.getOnAction() ,firstNameText.getText(),lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText() );
-//		registerButton.setOnAction(e2-> window.setScene(menuScene));
+
 		signUpGrid.setAlignment(Pos.TOP_CENTER);
 
 		signUpGrid.getChildren().addAll(firstNameLabel, firstNameText,lastNameLabel, lastNameText, newUsernameLabel, newUsernameText, newPasswordLabel, newPasswordText, registerButton);
@@ -230,7 +261,7 @@ public class Main  extends Application {
 
 		
 		
-		HBox.setMargin(customerIDLabel, new Insets(20, 10, 20, 10) );
+//		HBox.setMargin(customerIDLabel, new Insets(20, 10, 20, 10) );
 		
 
 		GridPane.setConstraints(flightsButton, 2, 3);
@@ -253,6 +284,16 @@ public class Main  extends Application {
 				myFlightTableView.setItems(allMyFlightObList);
 				
 	});
+		Button adminButton = new Button("admin");
+		adminButton.setBackground(null);
+
+		GridPane.setMargin(adminButton, new Insets(20, 10, 20, 10) );
+		GridPane.setConstraints(myFlightsButton, 2, 7);
+
+		Label emptyLabel = new Label("  ");
+		Label emptyLabel2 = new Label("  ");
+		Label emptyLabel3 = new Label("  ");
+
 
 		GridPane.setConstraints(myFlightsButton, 2, 5);
 		menu.setAlignment(Pos.CENTER);
@@ -262,12 +303,14 @@ public class Main  extends Application {
 		GridPane.setConstraints(logoutButton, 2, 7);
 		GridPane.setMargin(logoutButton, new Insets(20, 10, 20, 10) );
 		
-		
+		GridPane.setConstraints(customerIDLabel, 2, 10);
+		Region region = new Region();
 		logoutButton.setOnAction(e -> window.setScene(loginScene));
-		customerIDVBox.getChildren().addAll(customerIDLabel, menu);
+		customerIDVBox.getChildren().addAll(adminButton, menu, region, emptyLabel, emptyLabel2, emptyLabel3, customerIDLabel);
 		menu.getChildren().addAll(flightsButton, myFlightsButton, logoutButton);
 
-
+		
+		
 		
 		//Setting up flights layout
 		
@@ -483,39 +526,86 @@ public class Main  extends Application {
 			
 		});
 		
-//		
-//		refreshButton.setOnAction(e -> {
-//			if(allMyFlightObList2 != allMyFlightObList ) {
-//			try {
-//				myFlightVbox.getChildren().addAll(myFlightTableViewRefresh, myFlightsHbox, myFlightMenuButton);
-//				getMyFlights(allMyFlightObList);
-//
-//			} catch (Exception e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//			myFlightTableViewRefresh.setItems(allMyFlightObList);
-//			}else {
-//				System.out.println("Tables are the same");
-//			}
-//		});
+
 		
 		
 		HBox.setMargin(refreshButton, new Insets(20, 20, 20, 10) );
 	
-
-	
-
-		
-		
-		
-		
 		myFlightVbox.getChildren().addAll(myFlightTableView, myFlightsHbox, myFlightMenuButton);
 		myFlightsHbox.getChildren().addAll(refreshButton, removeFlightButton);
 		
+		//Creating admin page
+		HBox adminHBox = new HBox();
+		Scene adminScene = new Scene(adminHBox, 650, 300);
+		VBox adminVBoxLeft = new VBox();
+		VBox adminVBoxRight = new VBox();
+		HBox adminHBoxTopLeft = new HBox();
+		HBox adminHBoxMidLeft = new HBox();
+		HBox adminHBoxBottomLeft = new HBox();
+		
+		VBox adminVBox = new VBox();
+		adminVBox.setAlignment(Pos.TOP_CENTER);
+		GridPane adminGridPane2 = new GridPane();
 		
 		
+
+
 		
+			adminButton.setOnAction(e ->{
+				window.setScene(adminScene);
+			});
+			
+		
+
+		Label airline = new Label("Airline:            ");
+		Label price = new Label("          Price:           ");
+		Label destination = new Label("     Destination:   ");
+		Label departure = new Label("Departure:    ");
+		Label departureTime = new Label("Departure Time:");
+		Label arrivalTime = new Label("Arrival Time:");
+		Label flightDate = new Label("Flight Date");
+		Label emptyLabel4 = new Label("              ");
+		
+		TextField airlineText = new TextField();
+		TextField priceText = new TextField("$");
+		TextField destinationText = new TextField();
+		TextField departureText = new TextField();
+		TextField departureTimeText = new TextField();
+		TextField arrivalTimeText = new TextField();
+		TextField flightDateText = new TextField();
+		
+		Button adminMenuButton = new Button("Menu");
+		GridPane.setConstraints(adminMenuButton, 0, 5);
+		Button createFlight = new Button("New Flight");
+		GridPane.setMargin(createFlight, new Insets(0, 10, 10, 10) );
+//		GridPane.setMargin(adminMenuButton, new Insets(20, 20, 20, 10) );
+		adminGridPane2.setAlignment(Pos.TOP_LEFT);
+		adminMenuButton.setOnAction(e ->{
+			window.setScene(menuScene);
+		});
+
+		
+		HBox.setMargin(airline, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(airlineText, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(destination, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(destinationText, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(departure, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(departureText, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(departureTime, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(departureTimeText, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(arrivalTime, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(arrivalTimeText, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(price, new Insets(20, 10, 20, 10) );
+		HBox.setMargin(priceText, new Insets(20, 10, 20, 10) );
+
+		adminGridPane2.getChildren().addAll(adminMenuButton);
+		adminVBox.getChildren().addAll(emptyLabel4,createFlight);
+		adminHBoxBottomLeft.getChildren().addAll(arrivalTime,arrivalTimeText,price, priceText);
+		adminHBoxMidLeft.getChildren().addAll(departure, departureText, departureTime, departureTimeText);
+		adminHBoxTopLeft.getChildren().addAll(airline,airlineText, destination, destinationText );
+		adminVBoxLeft.getChildren().addAll(adminHBoxTopLeft, adminHBoxMidLeft, adminHBoxBottomLeft, adminVBox);
+		adminVBoxRight.getChildren().addAll();
+		adminHBox.getChildren().addAll(adminGridPane2,adminVBoxLeft,adminVBoxRight);
 		
 		window.setScene(loginScene);
 		window.setTitle("CIS Flight Booking");
