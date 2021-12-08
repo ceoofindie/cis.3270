@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -79,7 +80,7 @@ public class Main  extends Application {
 		GridPane.setConstraints(loginButton, 2, 5);
 		// if statement to validate login
 		TextField usernameText = new TextField();
-		TextField passwordText = new TextField();
+		PasswordField passwordText = new PasswordField();
 		Label loginMessageLabel = new Label();
 		GridPane.setConstraints(loginMessageLabel, 2, 7);
 
@@ -228,12 +229,14 @@ public class Main  extends Application {
 		GridPane.setConstraints(registerButton,2, 8);
 		GridPane.setMargin(registerButton, new Insets(15, 10, 15, 10) );
 		
+		
+		//creates new user
 		registerButton.setOnAction(e ->{
 			if(newUsernameText.getText().isEmpty() == false && newPasswordText.getText().isEmpty() == false && firstNameText.getText().isEmpty() == false && lastNameText.getText().isEmpty() == false ) {
 
 		 try {
 			FlightAppService.customerSignUp(firstNameText.getText(), lastNameText.getText(), newUsernameText.getText(), newPasswordText.getText());
-			window.setScene(menuScene);
+			window.setScene(loginScene);
 			Customer newCustomer = CustomerDao.getCustomer(newUsernameText.getText());
 			String customerID = newCustomer.getCustomerID();
 			customerIDLabel.setText(customerID);
@@ -291,9 +294,10 @@ public class Main  extends Application {
 				
 	});
 		
-	
-		Button adminButton = new Button("admin");
+
+	 	Button adminButton = new Button("admin");
 		
+	
 		adminButton.setBackground(null);
 
 		GridPane.setMargin(adminButton, new Insets(20, 10, 20, 10) );
